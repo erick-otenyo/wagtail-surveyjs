@@ -1,0 +1,109 @@
+{% extends "wagtailadmin/base.html" %}
+{% load i18n %}
+{% load l10n %}
+{% load wagtailadmin_tags wagtailimages_tags static %}
+{% block titletag %}{% blocktrans with title=page.get_admin_display_title %}Survey Creator{{ title }}
+{% endblocktrans %}{% endblock %}
+
+{% block extra_css %}
+    {{ block.super }}
+    <link href="{% static 'css/core_reset.css' %}" type="text/css" rel="stylesheet">
+    <link href="{% static 'css/creator.css' %}" type="text/css" rel="stylesheet">
+    <style>
+        .content {
+            padding: 0 !important;
+        }
+
+        .svc-notifier {
+            bottom: 80px;
+        }
+
+    </style>
+{% endblock %}
+
+{% block content %}
+    <div id="surveyContainer" style="height: 100vh"></div>
+
+    <footer class="footer">
+        <ul>
+            <li class="footer__container">
+                <nav aria-label="{% trans 'Actions' %}">
+                    <ul>
+                        <li class="actions actions--primary">
+                            <div class="dropdown dropup dropdown-button match-width">
+                                <a href="{{ survey.get_model_admin_list_url }}" class="button">
+                                    {% trans 'Done' %}
+                                </a>
+                                <div class="dropdown-toggle">{% icon name="arrow-up" %}</div>
+                                <ul>
+                                    <li>
+                                        <a href="{% url 'wagtailadmin_pages:edit' survey.pk %}"
+                                           class="button">
+                                            {% trans 'Go to Survey Page' %}
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </li>
+                    </ul>
+                </nav>
+            </li>
+        </ul>
+    </footer>
+
+{% endblock %}
+
+{% block extra_js %}
+    {{ block.super }}
+    <script src="{% static 'js/creator.js' %}"></script>
+    <script>
+
+        $(function () {
+            function getCookie(name) {
+                let cookieValue = null;
+                if (document.cookie && document.cookie !== '') {
+                    const cookies = document.cookie.split(';');
+                    for (let i = 0; i < cookies.length; i++) {
+                        const cookie = cookies[i].trim();
+                        // Does this cookie string begin with the name we want?
+                        if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                            cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                            break;
+                        }
+                    }
+                }
+                return cookieValue;
+            }
+
+            const csrfToken = getCookie('csrftoken');
+
+            const surveyId = '{{ survey.id }}';
+            const surveyName = '{{ survey.title }}';
+            const surveyUpdateUrl = '{{ survey.survey_creator_update_url }}';
+            const surveyJsonStr = '{{ survey.json|escapejs }}'
+            let settings = JSON.parse('{{ settings|escapejs }}')
+            const {has_license} = settings
+
+
+            let surveyJson = {}
+
+            if (surveyJsonStr) {
+                surveyJson = JSON.parse(surveyJsonStr);
+            }
+
+            const options = {
+                json: surveyJson,
+                name: surveyName,
+                id: surveyId,
+                autoSaveApiEndpoint: surveyUpdateUrl,
+                hasLicense: has_license,
+                csrfToken: csrfToken,
+                creatorOptions: {
+                    showSurveyTitle: false
+                }
+            }
+
+            SurveyJSDjango.edit("surveyContainer", options);
+        })
+    </script>
+{% endblock %}
