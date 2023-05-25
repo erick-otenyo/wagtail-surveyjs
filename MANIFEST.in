@@ -1,0 +1,4 @@
+include README.md
+recursive-include wagtailsurveyjs *.py
+recursive-include wagtailsurveyjs *.html
+recursive-include wagtailsurveyjs/templates *

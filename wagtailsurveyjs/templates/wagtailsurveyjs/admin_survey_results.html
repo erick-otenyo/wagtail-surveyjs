@@ -1,0 +1,85 @@
+{% extends "wagtailadmin/base.html" %}
+{% load i18n %}
+{% load l10n %}
+{% load wagtailadmin_tags wagtailimages_tags static %}
+{% block titletag %}{% blocktrans with title=page.get_admin_display_title %}Survey Dashboard{{ title }}
+{% endblocktrans %}{% endblock %}
+
+{% block extra_css %}
+    {{ block.super }}
+    <link href="{% static 'wagtailsurveyjs/css/dashboard.css' %}" type="text/css" rel="stylesheet">
+    <style>
+        .content {
+            padding: 0 !important;
+        }
+
+        .svc-notifier {
+            bottom: 80px;
+        }
+
+    </style>
+{% endblock %}
+
+
+{% block content %}
+    {% trans "Survey Data" as header_str %}
+    {% include "wagtailadmin/shared/header.html" with title=header_str|add:" - "|add:survey.title subtitle=page.get_admin_display_title icon="clipboard-list" %}
+    <div class="nice-padding">
+        <div class="w-tabs" data-tabs>
+            <div class="w-tabs__wrapper">
+                <div role="tablist" class="w-tabs__list">
+                    {% include 'wagtailadmin/shared/tabs/tab_nav_link.html' with tab_id='tabular' title='Tabular Data' %}
+                    {% include 'wagtailadmin/shared/tabs/tab_nav_link.html' with tab_id='interactive' title='Interactive Dashboard' %}
+                </div>
+            </div>
+            <div class="tab-content">
+                <section id="tab-tabular" class="w-tabs__panel" role="tabpanel" aria-labelledby="tab-label-tabular"
+                         hidden>
+                    <div id="surveyTabular"></div>
+                </section>
+                <section id="tab-interactive" class="w-tabs__panel" role="tabpanel"
+                         aria-labelledby="tab-label-interactive" hidden>
+                    <div id="surveyInteractive"></div>
+                </section>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block extra_js %}
+    {{ block.super }}
+    <script src="{% static 'wagtailsurveyjs/js/dashboard.js' %}"></script>
+    <script>
+        $(function () {
+            const surveyDataUrl = '{{ survey_data_url }}';
+            let settings = JSON.parse('{{ settings|escapejs }}')
+            const {has_license} = settings
+
+            const options = {
+                surveyDataUrl: surveyDataUrl,
+                vizPanelOptions: {
+                    haveCommercialLicense: has_license
+                }
+            }
+
+            const tabularOptions = {
+                ...options,
+                tabular: true,
+            }
+
+            $(".w-tabs__tab ").click(function () {
+                const $this = $(this)
+                if ($this.attr('id') === "tab-label-interactive") {
+                    const $render = $("#surveyInteractive").find(".vizpanel-render")
+                    if ($render && !!$render.length) {
+                        $render.empty()
+                    }
+                    SurveyJSDjango.dashboard("surveyInteractive", options);
+                }
+            });
+
+            SurveyJSDjango.dashboard("surveyTabular", tabularOptions);
+            SurveyJSDjango.dashboard("surveyInteractive", options);
+        })
+    </script>
+{% endblock %}

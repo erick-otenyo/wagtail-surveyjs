@@ -1,3 +1,3 @@
-# Wagtail SurveyJs Form Page
+# Wagtail SurveyJs Integration
 
 Integrate Survey Js Forms in Wagtail
