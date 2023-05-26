@@ -35,6 +35,7 @@ Add` wagtailsurveyjs` to your installed apps. Make sure `wagtail.contrib.setting
  INSTALLED_APPS = [
     ...
     "wagtailsurveyjs",
+  
     "wagtail.contrib.settings",
     ...
 ]
@@ -122,8 +123,8 @@ bootstrapped project files
 {% load static wagtailcore_tags %}
 
 {% block extra_css %}
-{{ block.super }}
-<link href="{% static 'wagtailsurveyjs/css/vendor/defaultV2.min.css' %}" type="text/css" rel="stylesheet">
+  {{ block.super }}
+  <link href="{% static 'wagtailsurveyjs/css/vendor/defaultV2.min.css' %}" type="text/css" rel="stylesheet">
 {% endblock %}
 
 {% block content %}
@@ -135,11 +136,11 @@ bootstrapped project files
 {% endblock content %}
 
 {% block extra_js %}
-{{ block.super }}
-<script src="{% static 'wagtailsurveyjs/js/vendor/jquery.min.js' %}"></script>
-<script src="{% static 'wagtailsurveyjs/js/vendor/survey.jquery.js' %}"></script>
-
-{% include "wagtailsurveyjs/survey_form_page_js_include.html" %}
+  {{ block.super }}
+  <script src="{% static 'wagtailsurveyjs/js/vendor/jquery.min.js' %}"></script>
+  <script src="{% static 'wagtailsurveyjs/js/vendor/survey.jquery.js' %}"></script>
+  
+  {% include "wagtailsurveyjs/survey_form_page_js_include.html" %}
 {% endblock %}
 
 ```
@@ -179,14 +180,14 @@ To use a custom id other than the default `survey-form-container`, you can do th
 
 {% block extra_js %}
 {{ block.super }}
-<script src="{% static 'wagtailsurveyjs/js/vendor/jquery.min.js' %}"></script>
-<script src="{% static 'wagtailsurveyjs/js/vendor/survey.jquery.js' %}"></script>
-
-<script type="text/javascript">
-    const surveyContainerId = "custom-id"
-</script>
-
-{% include "wagtailsurveyjs/survey_form_page_js_include.html" %}
+  <script src="{% static 'wagtailsurveyjs/js/vendor/jquery.min.js' %}"></script>
+  <script src="{% static 'wagtailsurveyjs/js/vendor/survey.jquery.js' %}"></script>
+  
+  <script type="text/javascript">
+      const surveyContainerId = "custom-id"
+  </script>
+  
+  {% include "wagtailsurveyjs/survey_form_page_js_include.html" %}
 {% endblock %}
 ```
 
@@ -214,6 +215,19 @@ Using [Wagtail Model Admin](https://docs.wagtail.org/en/stable/reference/contrib
 register a dedicated Menu item to the admin sidebar, to quickly access the pages and results.
 
 Below are steps on how you can achieve this:
+
+Add `wagtail.contrib.modeladmin` to `INSTALLED_APPS` if not yet added
+
+```python
+ INSTALLED_APPS = [
+    ...
+    "wagtailsurveyjs",
+  
+    "wagtail.contrib.settings",
+    "wagtail.contrib.modeladmin",
+    ...
+]
+```
 
 In your apps' `wagtail_hooks.py` file add the following:
 
