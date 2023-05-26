@@ -47,6 +47,16 @@ Run migrations
 python manage.py migrate wagtailsurveyjs
 ```
 
+Add the following to your project's `urls.py`
+
+```python
+urlpatterns = [
+    ...
+    path("", include("wagtailsurveyjs.urls")),
+    ...
+]
+```
+
 # Usage
 
 ### Settings
@@ -93,8 +103,12 @@ screenshot below:
 
 ![Sample Survey](screenshots/sample_survey.png)
 
-There is nothing much here to set up, unless you added more model fields to your Page. Save your page, and go back to
-the listing of your pages on the Wagtail Admin Explorer.
+There is nothing much here to set up, unless you added more model fields to your Page.
+
+`Publish` your page, and go back to the listing of your pages on the Wagtail Admin Explorer.
+
+`NOTE`: Make sure you `Publish` the page before going to the survey creator. Saving as draft might give you issues where
+your designed form fields might be lost on publishing later. So make sure you publish before designing the survey form.
 
 Hover around the page title, and you will see a button named `Survey Creator` as below:
 
