@@ -2,10 +2,12 @@ import json
 
 from django.shortcuts import render, get_object_or_404
 from django.urls import reverse
+from django.utils.datastructures import MultiValueDict
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from wagtail.models import Page
 
+from .forms import SurveyJsCreatorFileUploadForm, SurveyJsSubmissionUploadForm
 from .models import SurveySettings, SurveyFormSubmission
 from .serializers import SurveyFormPageSerializer, SurveyFormSubmissionSerializer
 
@@ -71,6 +73,34 @@ class SurveyDetailView(APIView):
             return Response({
                 "success": "Survey '{}' updated successfully".format(survey_saved.name)
             })
+
+    def post(self, request, survey_id):
+        page = get_object_or_404(Page.objects.all(), pk=survey_id)
+        form = SurveyJsCreatorFileUploadForm({"survey_id": page.id}, request.FILES)
+
+        if form.is_valid():
+            obj = form.save()
+            return Response({"url": request.build_absolute_uri(obj.file.url)})
+        else:
+            return Response({"error": "error"}, status=400)
+
+
+class SurveySubmissionFileUploadAPIView(APIView):
+    def post(self, request, survey_id):
+        page = get_object_or_404(Page.objects.all(), pk=survey_id)
+        uploads = {}
+
+        if request.FILES:
+            for key, file in request.FILES.items():
+                files = MultiValueDict()
+                files.update({"file": file})
+                form = SurveyJsSubmissionUploadForm({"survey_id": page.id}, files=files)
+                if form.is_valid():
+                    obj = form.save()
+                    uploads.update({key: request.build_absolute_uri(obj.file.url)})
+            return Response({"uploads": uploads})
+        else:
+            return Response({"error": "error"}, status=400)
 
 
 class SurveySubmissionAPIView(APIView):

@@ -1,11 +1,11 @@
 from django.db import models
 from django.urls import reverse
+from django.utils.translation import gettext as _
 from wagtail.contrib.forms.models import AbstractFormSubmission
 from wagtail.contrib.modeladmin.helpers import AdminURLHelper
 from wagtail.contrib.settings.models import BaseSiteSetting
 from wagtail.contrib.settings.registry import register_setting
 from wagtail.models import Page
-from django.utils.translation import gettext as _
 
 
 @register_setting
@@ -14,6 +14,16 @@ class SurveySettings(BaseSiteSetting):
                                       help_text=_(
                                           "Only check if you have purchased a SurveyJS License. "
                                           "See https://surveyjs.io/licensing"))
+
+
+class SurveyJsCreatorFileUpload(models.Model):
+    survey_id = models.ForeignKey('wagtailcore.Page', related_name='+', on_delete=models.CASCADE)
+    file = models.FileField(upload_to="surveyjs/creator/")
+
+
+class SurveyJsSubmissionFileUpload(models.Model):
+    survey_id = models.ForeignKey('wagtailcore.Page', related_name='+', on_delete=models.CASCADE)
+    file = models.FileField(upload_to="surveyjs/submission/")
 
 
 class SurveyFormSubmission(AbstractFormSubmission):
@@ -44,6 +54,10 @@ class AbstractSurveyJsFormPage(Page):
     @property
     def submit_url(self):
         return reverse("survey_data", args=[self.pk])
+
+    @property
+    def uploads_url(self):
+        return reverse("survey_uploads", args=[self.pk])
 
     @property
     def name(self):
