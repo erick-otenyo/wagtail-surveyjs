@@ -163,7 +163,7 @@ If all went well, your survey with questions should be rendered:
 
 Ofcourse you could style the page as you would do with any Wagtail/Django rendered page.
 
-# Using a custom survey container element id
+### Using a custom survey container element id
 
 The default survey container element that the Js script looks for is `survey-form-container`.
 
@@ -190,6 +190,59 @@ To use a custom id other than the default `survey-form-container`, you can do th
 {% endblock %}
 ```
 
+### Viewing results
+
+Once you have published your page, shared it and started receiving submissions from your users, you can view results
+dashboard by following the below steps.
+
+- Navigate to where your Survey page is listed
+- Hover to view the page buttons, click on `Survey Results` (similar to how you access the survey creator as explained
+  above)
+- The Survey JS results interface will be shown, as in the below screenshot
+
+![Survey Results Sample](screenshots/survey_results.png)
+
+You can view the results in `Tabular format` or as an `interactive dashboard` with customizable visualizations and
+charts.
+
+You can use the `CSV` button to export as CSV format
+
+### Quickly access Survey Pages and results
+
+If you have a lot of Wagtail pages, navigating and finding the survey pages can be cumbersome.
+Using [Wagtail Model Admin](https://docs.wagtail.org/en/stable/reference/contrib/modeladmin/index.html), you can
+register a dedicated Menu item to the admin sidebar, to quickly access the pages and results.
+
+Below are steps on how you can achieve this:
+
+In your apps' `wagtail_hooks.py` file add the following:
+
+```python
+from wagtail.contrib.modeladmin.options import modeladmin_register
+from .models import SurveyPage  # your survejs page model
+from wagtailsurveyjs.wagtail_hooks import BaseSurveyModelAdmin
+
+
+class SurveyModelAdmin(BaseSurveyModelAdmin):
+    model = SurveyPage
+    menu_label = 'Surveys'
+    menu_icon = 'folder-inverse'
+    menu_order = 700
+
+
+modeladmin_register(SurveyModelAdmin)
+
+```
+
+Restart your development server
+
+A new menu item will be added to the Wagtail Admin sidebar as in below screenshot:
+
+![Quick Access](screenshots/quick_access.png)
+
+1. Click on the newly added menu item `Surveys`.
+2. Link to access the `survey creator` for the page
+3. Link to access the `results/dashboard`
 
 
 
