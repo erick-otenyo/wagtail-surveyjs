@@ -11,7 +11,9 @@ from django.utils.translation import gettext as _
 @register_setting
 class SurveySettings(BaseSiteSetting):
     has_license = models.BooleanField(default=False, verbose_name=_("Has Survey JS Licence"),
-                                      help_text=_("Only check if you have purchased a SurveyJS License"))
+                                      help_text=_(
+                                          "Only check if you have purchased a SurveyJS License. "
+                                          "See https://surveyjs.io/licensing"))
 
 
 class SurveyFormSubmission(AbstractFormSubmission):
