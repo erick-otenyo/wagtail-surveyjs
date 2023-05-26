@@ -65,6 +65,31 @@ export function edit(
         };
     }
 
+    creator.onUploadFile.add(function (_, options) {
+        const formData = new FormData();
+        formData.append("file", options.files[0]); // get first file
+
+        const headers = {}
+
+        if (csrfToken) {
+            headers["X-CSRFToken"] = csrfToken
+        }
+
+        fetch(autoSaveApiEndpoint, {
+            method: "POST",
+            body: formData,
+            headers: headers
+        }).then((response) => response.json())
+            .then((result) => {
+                console.log(result)
+                options.callback("success", result.url);
+            })
+            .catch((error) => {
+                options.callback('error');
+            });
+    });
+
+
     ReactDOM.render(
         <React.StrictMode>
             <SurveyCreatorComponent creator={creator}/>
