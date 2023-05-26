@@ -35,7 +35,7 @@ Add` wagtailsurveyjs` to your installed apps. Make sure `wagtail.contrib.setting
  INSTALLED_APPS = [
     ...
     "wagtailsurveyjs",
-  
+
     "wagtail.contrib.settings",
     ...
 ]
@@ -120,11 +120,11 @@ bootstrapped project files
 ```html
 {% extends 'base.html' %}
 
-{% load static wagtailcore_tags %}
+{% load static %}
 
 {% block extra_css %}
-  {{ block.super }}
-  <link href="{% static 'wagtailsurveyjs/css/vendor/defaultV2.min.css' %}" type="text/css" rel="stylesheet">
+{{ block.super }}
+<link href="{% static 'wagtailsurveyjs/css/vendor/defaultV2.min.css' %}" type="text/css" rel="stylesheet">
 {% endblock %}
 
 {% block content %}
@@ -136,11 +136,11 @@ bootstrapped project files
 {% endblock content %}
 
 {% block extra_js %}
-  {{ block.super }}
-  <script src="{% static 'wagtailsurveyjs/js/vendor/jquery.min.js' %}"></script>
-  <script src="{% static 'wagtailsurveyjs/js/vendor/survey.jquery.js' %}"></script>
-  
-  {% include "wagtailsurveyjs/survey_form_page_js_include.html" %}
+{{ block.super }}
+<script src="{% static 'wagtailsurveyjs/js/vendor/jquery.min.js' %}"></script>
+<script src="{% static 'wagtailsurveyjs/js/vendor/survey.jquery.js' %}"></script>
+
+{% include "wagtailsurveyjs/survey_form_page_js_include.html" %}
 {% endblock %}
 
 ```
@@ -156,7 +156,7 @@ Here we include:
 - The survey form container element, `<div id="survey-form-container"></div>`, where the form will be rendered. Note the
   default id that is expected is `survey-form-container`.
 
-That is all that is needed to show a survey js form.
+That is all that is needed to show a survey js form. You can view a complete example in the sample app `sandbox/home`.
 
 If all went well, your survey with questions should be rendered:
 
@@ -180,14 +180,14 @@ To use a custom id other than the default `survey-form-container`, you can do th
 
 {% block extra_js %}
 {{ block.super }}
-  <script src="{% static 'wagtailsurveyjs/js/vendor/jquery.min.js' %}"></script>
-  <script src="{% static 'wagtailsurveyjs/js/vendor/survey.jquery.js' %}"></script>
-  
-  <script type="text/javascript">
-      const surveyContainerId = "custom-id"
-  </script>
-  
-  {% include "wagtailsurveyjs/survey_form_page_js_include.html" %}
+<script src="{% static 'wagtailsurveyjs/js/vendor/jquery.min.js' %}"></script>
+<script src="{% static 'wagtailsurveyjs/js/vendor/survey.jquery.js' %}"></script>
+
+<script type="text/javascript">
+    const surveyContainerId = "custom-id"
+</script>
+
+{% include "wagtailsurveyjs/survey_form_page_js_include.html" %}
 {% endblock %}
 ```
 
@@ -222,7 +222,7 @@ Add `wagtail.contrib.modeladmin` to `INSTALLED_APPS` if not yet added
  INSTALLED_APPS = [
     ...
     "wagtailsurveyjs",
-  
+
     "wagtail.contrib.settings",
     "wagtail.contrib.modeladmin",
     ...
