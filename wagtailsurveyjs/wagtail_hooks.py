@@ -3,7 +3,7 @@ from django.utils.safestring import mark_safe
 from wagtail import hooks
 from wagtail.admin import widgets as wagtail_admin_widgets
 from wagtail.admin.action_menu import ActionMenuItem
-from wagtail.contrib.modeladmin.options import ModelAdmin
+from wagtail_modeladmin.options import ModelAdmin
 
 from .models import AbstractSurveyJsFormPage
 from .views import survey_creator, survey_results
