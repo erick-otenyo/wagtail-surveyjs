@@ -2,10 +2,10 @@ from django.db import models
 from django.urls import reverse
 from django.utils.translation import gettext as _
 from wagtail.contrib.forms.models import AbstractFormSubmission
-from wagtail.contrib.modeladmin.helpers import AdminURLHelper
 from wagtail.contrib.settings.models import BaseSiteSetting
 from wagtail.contrib.settings.registry import register_setting
 from wagtail.models import Page
+from wagtail_modeladmin.helpers import AdminURLHelper
 
 
 @register_setting

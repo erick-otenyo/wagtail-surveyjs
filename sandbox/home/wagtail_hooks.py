@@ -1,7 +1,7 @@
-from wagtail.contrib.modeladmin.options import modeladmin_register
+from wagtail_modeladmin.options import modeladmin_register, ModelAdminGroup
 
-from .models import SurveyPage
 from wagtailsurveyjs.wagtail_hooks import BaseSurveyModelAdmin
+from .models import SurveyPage
 
 
 class SurveyModelAdmin(BaseSurveyModelAdmin):
