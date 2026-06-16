@@ -25,20 +25,22 @@
     {% trans "Survey Data" as header_str %}
     {% include "wagtailadmin/shared/header.html" with title=header_str|add:" - "|add:survey.title subtitle=page.get_admin_display_title icon="clipboard-list" %}
     <div class="nice-padding">
-        <div class="w-tabs" data-tabs>
+        <div class="w-tabs" data-controller="w-tabs" data-w-tabs-use-location-value="false">
             <div class="w-tabs__wrapper">
-                <div role="tablist" class="w-tabs__list">
+                <div role="tablist" class="w-tabs__list"
+                     data-action="keydown.right->w-tabs#selectNext keydown.left->w-tabs#selectPrevious keydown.home->w-tabs#selectFirst keydown.end->w-tabs#selectLast">
                     {% include 'wagtailadmin/shared/tabs/tab_nav_link.html' with tab_id='tabular' title='Tabular Data' %}
                     {% include 'wagtailadmin/shared/tabs/tab_nav_link.html' with tab_id='interactive' title='Interactive Dashboard' %}
                 </div>
             </div>
             <div class="tab-content">
                 <section id="tab-tabular" class="w-tabs__panel" role="tabpanel" aria-labelledby="tab-label-tabular"
-                         hidden>
+                         hidden data-w-tabs-target="panel" data-action="w-focus:focus->w-tabs#selectInside">
                     <div id="surveyTabular"></div>
                 </section>
                 <section id="tab-interactive" class="w-tabs__panel" role="tabpanel"
-                         aria-labelledby="tab-label-interactive" hidden>
+                         aria-labelledby="tab-label-interactive" hidden
+                         data-w-tabs-target="panel" data-action="w-focus:focus->w-tabs#selectInside">
                     <div id="surveyInteractive"></div>
                 </section>
             </div>
